@@ -1,76 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Peyton Campbell's portfolio. Peyton is a software developer and data analyst based in Ontario.">
+    <meta name="keywords" content="Peyton Campbell, software developer, data analyst, portfolio">
+    <meta name="author" content="Peyton Campbell">
+    <meta property="og:title" content="Peyton Campbell - Portfolio">
+    <meta property="og:description" content="Software Developer/Data Analyst based in Ontario.">
+    <meta property="og:image" content="path/to/your/image.jpg">
+    <meta property="og:url" content="your-website-url-here">
     <title>Peyton Campbell - Portfolio</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-        }
-        header {
-            text-align: center;
-            padding: 10px;
-            background-color: #f3f3f3;
-        }
-        section {
-            margin: 20px 0;
-        }
-        h2 {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-        ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-        li {
-            margin-bottom: 10px;
-        }
-        a {
-            text-decoration: none;
-            color: #007bff;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 </head>
 <body>
-    <header>
+    <a href="#main-content" class="sr-only">Skip to main content</a>
+    <header role="banner">
         <h1>Peyton Campbell</h1>
-        <p>Software Developer</p>
+        <p>Software Developer/Data Analyst</p>
+        <img src="Headshot.jpg" alt="A headshot of Peyton Campbell" class="profile-pic" loading="lazy">
+        <div class="social-media">
+            <a href="https://www.linkedin.com/in/peyton-campbell-778b5622a/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/swaggy6p" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://twitter.com/Campbell6Peyton" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        </div>
     </header>
-    <section>
-        <h2>About Me</h2>
-        <p>
-            I am a dedicated and motivated programming student at The University of Western Ontario, with proficiency in Java, Python, C, C++, and Linux/Unix. In my most recent project, I developed a software program that reduced data processing time by 50% for a local business.
-In addition to my academic pursuits, I have a deep love for sports, particularly basketball. Growing up in an athletic family, I quickly discovered my passion for the game and led my high school team to victory in the OFSAA Basketball tournament in 2019. This accomplishment required dedication, teamwork, and perseverance.
-My experience in both programming and sports has taught me the importance of these qualities. I am always striving to improve and take on new challenges, and I am excited to bring this mindset to my future career in computer science.
-If you are looking for a motivated and dedicated programming student with a passion for sports and design principles, I would be thrilled to connect with you.
-        </p>
+    
+    <nav role="navigation">   
+        <a href="#Introduction">Introduction</a>
+        <a href="#About">About Me</a>
+        <a href="#Skills">Skills</a>
+        <a href="#Projects">Projects</a>
+        <a href="#Contact">Contact</a>
+    </nav>
+    <main id="main-content">
+        <section id="Introduction" role="region" aria-labelledby="intro-heading">
+            <h2 id="intro-heading">Introduction</h2>
+            Hello and welcome to my portfolio! I'm Peyton, a software developer and student with a passion for problem-solving, team collaboration, and sports. Whether you're a potential employer, a project partner, or someone who shares similar interests, I invite you to explore my work and reach out to connect.
+        </section>
+        <section id="About" role="region" aria-labelledby="about-heading">
+            <h2 id="about-heading">About Me</h2>
+            <div class="flex-container">
+                <div class="flex-item">
+                    <p>Hello again! My name is Peyton Campbell and I currently study Computer Science at The University of Western Ontario.</p>
+                    <img src="university_pic.jpg" alt="At the University" class="img-rounded" loading="lazy">
+                    <p>My education has been a blend of academic learning and real-world experience.</p>
+                </div>
+                
+                <div class="flex-item">
+                    <img src="research_pic.jpg" alt="Research project" class="img-rounded" loading="lazy">
+                    <p>During my studies, I've taken a keen interest in Data Science and Artificial Intelligence. This has lead me to a path on a passion project to create.</p>
+                    <p>Currently I am working on my MLB projection project utilizing current and past historical statistics to predict future outcomes in the MLB.</p>
+                </div>
+                
+                <div class="flex-item">
+                    <p>Outside of my professional and academic life, I am an athlete who has achieved some of the highest accolades in various sports. At Western, I played 3 years for the team before retiring due to injuries.</p>
+                    <img src="basketball-comitment.jpg" alt="Basketball commitment photo" class="img-rounded" loading="lazy">
+                    <p>This has now lead me to a work study with the basketball team being head of the Analytics team.</p>
+                    <p>My skill set includes proficiency in languages such as Java, Python, C, C++, and I am comfortable working in Linux/Unix environments.</p>
+                </div>
+            </div>
+            <p>Thank you for taking the time to learn more about me. I invite you to take a look at my projects, and if you see a potential for collaboration, don't hesitate to reach out.</p>
+        </section>    
+
+        <section id="Skills" role="region" aria-labelledby="skills-header">
+            <h2 id="skills-header">Skills</h2>
+            <ul>
+                <li>Java</li>
+                <li>Python</li>
+                <li>Data Analysis</li>
+                <li>Team Leadership</li>
+                <!-- Add more skills here -->
+            </ul>
+        </section>
+        
+        <section id="Projects" role="region" aria-labelledby="projects-header">
+            <h2 id="projects-header">Projects</h2>
+            <div class="project-card" id="project1">
+                <h3>Project 1</h3>
+                <p>Description of the project...</p>
+            </div>
+            <!-- Add more project cards here -->
+        </section>
+        
+        <section id="Contact" role="region" aria-labelledby="contact-header">
+            <h2 id="contact-header">Contact</h2>
+            <form id="contact-form">
+                <label for="email">Email:</label>
+                <input type="email" id="email" required>
+                <label for="message">Message:</label>
+                <textarea id="message" required></textarea>
+                <button type="submit">Send</button>
+            </form>
+        </section>
     </section>
-    <section>
-        <h2>Projects</h2>
-        <ul>
-            <li>
-                <a href="#">Project 1</a>
-                <p>Description of project 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </li>
-            <li>
-                <a href="#">Project 2</a>
-                <p>Description of project 2. Quisque at semper tortor, sit amet consectetur neque.</p>
-            </li>
-            <li>
-                <a href="#">Project 3</a>
-                <p>Description of project 3. Proin quis velit nec leo accumsan pellentesque.</p>
-            </li>
-        </ul>
-    </section>
-    <section>
-        <h2>Contact</h2>
-        <p>
-            You can reach me at <a href="mailto:youremail@example.com">campbellpeyton042@gmail.com</a>
-        </p>
-    </section>
+    <script async src="script.js"></script>
 </body>
 </html>
