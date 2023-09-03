@@ -25,26 +25,61 @@ body {
     font-family: Arial, sans-serif;
     margin: 40px auto;  /* Only top and bottom margins, left and right are set to auto */
     width: 100%;  /* Take the full width */
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
 }
 
 header {
-    text-align: center;
-    padding: 10px;
-    background-color: #007bff;
+    background: #50b3a2;
     color: white;
-}
-nav {
-    background-color: #f3f3f3;
     text-align: center;
-    padding: 10px;
+    padding: 1em 0;
 }
+
+header h1 {
+    margin: 0;
+    padding: 0.5em 0;
+}
+
+nav {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 0.5em;
+}
+
 nav a {
     margin: 0 15px;
     text-decoration: none;
+    color: white;
 }
+
 nav a:hover {
     text-decoration: underline;
 }
+
+.main-content {
+    padding: 20px;
+}
+
+.flex-container {
+    display: flex;
+    gap: 1rem;
+}
+
+.img-rounded {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.project-card {
+    border: 1px solid #ccc;
+    padding: 1em;
+    border-radius: 8px;
+}
+
 section {
     margin: 20px 0;
 }
@@ -59,21 +94,11 @@ img.profile-pic {
 }
 
 /* Flexbox and Cards */
-.flex-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
 .flex-item {
     flex: 1;
     margin-bottom: 20px;
 }
-.project-card {
-    border: 1px solid #007bff;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 8px;
-}
+
 .img-rounded {
     width: 100%;
     border-radius: 8px;
@@ -138,3 +163,38 @@ img.profile-pic {
 .social-media i {
     font-size: 1.5em;  /* Adjust size as needed */
 }
+
+/* Global styles for all sections */
+section {
+    padding: 2em;
+    margin: 1em 0;
+    border-radius: 8px;
+}
+
+/* Unique stylings for individual sections */
+#Introduction {
+    background-color: #e6f7ff;
+}
+
+#About {
+    background-color: #ffe6e6;
+    border: 1px solid #ffcccc;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+#Skills {
+    background-color: #fff9e6;
+    border-top: 4px solid #ffcc00;
+    border-bottom: 4px solid #ffcc00;
+}
+
+#Projects {
+    background: url('path/to/your/pattern.png');
+}
+
+#Contact {
+    background-color: #e6ffe6;
+    border-left: 10px solid #00cc44;
+    border-right: 10px solid #00cc44;
+}
+
