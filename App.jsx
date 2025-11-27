@@ -33,7 +33,7 @@ const userData = {
     title: "About Me",
     description: [
       "Hi I’m Peyton a Software Developer at OES Inc with a BSc in Computer Science from Western University and a certificate in AI and Machine Learning from Fanshawe College I work with Python, Java and C and I focus on building high performance software that creates real world impact",
-      "Outside of tech I played varsity basketball at Western and led the Mother Teresa Spartans to an OFSAA championship in high school Competing at a high level taught me leadership resilience and how to stay composed under pressure and I bring those qualities into every project I work on",
+      "Outside of tech I played varsity basketball at Western. Competing at a high level taught me leadership resilience and how to stay composed under pressure and I bring those qualities into every project I work on",
       "I enjoy meeting new people learning their stories and connecting over shared ideas"
     ]
   },

@@ -1,13 +1,25 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Download, Github, Linkedin, Mail, ExternalLink, ChevronRight } from 'lucide-react';
-import { NAV_LINKS, HERO, EXPERIENCE, PROJECTS, EDUCATION } from './data';
+import {
+  ArrowRight,
+  Download,
+  Github,
+  Linkedin,
+  Mail,
+  ExternalLink,
+  ChevronRight,
+  Menu,
+  X,
+  CalendarClock,
+} from 'lucide-react';
+import { NAV_LINKS, HERO, EXPERIENCE, PROJECTS, EDUCATION, SCOUTING_REPORT, HIGHLIGHTS } from './data';
 import LiveTicker from './LiveTicker';
+import RadarChart from './RadarChart';
 import clsx from 'clsx';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 }
+  visible: { opacity: 1, y: 0 },
 };
 
 const staggerContainer = {
@@ -15,19 +27,19 @@ const staggerContainer = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 };
 
-function SectionHeading({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+function SectionHeading({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
-    <motion.h2 
+    <motion.h2
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
       variants={fadeInUp}
-      className={clsx("text-3xl md:text-4xl font-bold mb-12 text-white border-l-4 border-blue-500 pl-4", className)}
+      className={clsx('text-3xl md:text-4xl font-bold mb-12 text-white border-l-4 border-blue-500 pl-4', className)}
     >
       {children}
     </motion.h2>
@@ -38,17 +50,17 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [projectFilter, setProjectFilter] = useState('All');
   const [athleteImageIndex, setAthleteImageIndex] = useState(0);
-  
-  const athleteImages = [
-    `${import.meta.env.BASE_URL}basketball.jpg`,
-    `${import.meta.env.BASE_URL}golf.jpg`
-  ];
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
+  const [contactError, setContactError] = useState<string | null>(null);
+  const [contactSuccess, setContactSuccess] = useState(false);
+
+  const athleteImages = [`${import.meta.env.BASE_URL}basketball.jpg`, `${import.meta.env.BASE_URL}golf.jpg`];
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
-    
-    // Cycle athlete images every 5 seconds
+
     const imageTimer = setInterval(() => {
       setAthleteImageIndex((prev) => (prev + 1) % athleteImages.length);
     }, 5000);
@@ -57,19 +69,40 @@ export default function App() {
       window.removeEventListener('scroll', handleScroll);
       clearInterval(imageTimer);
     };
-  }, []);
+  }, [athleteImages.length]);
 
-  const filteredProjects = projectFilter === 'All' 
-    ? PROJECTS 
-    : PROJECTS.filter(p => p.category === projectFilter);
+  const handleContactChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setContactForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleContactSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setContactError(null);
+    setContactSuccess(false);
+    if (!contactForm.name.trim() || !contactForm.email.trim() || !contactForm.message.trim()) {
+      setContactError('Please fill in all fields.');
+      return;
+    }
+    const emailPattern = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+    if (!emailPattern.test(contactForm.email.trim())) {
+      setContactError('Please enter a valid email.');
+      return;
+    }
+    setContactSuccess(true);
+    setContactForm({ name: '', email: '', message: '' });
+  };
+
+  const filteredProjects = projectFilter === 'All' ? PROJECTS : PROJECTS.filter((p) => p.category === projectFilter);
 
   return (
     <div className="min-h-screen text-slate-300 selection:bg-blue-500/30">
       {/* Navbar */}
-      <nav className={clsx(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-transparent",
-        scrolled ? "bg-slate-950/80 backdrop-blur-md border-slate-800 py-4" : "bg-transparent py-6"
-      )}>
+      <nav
+        className={clsx(
+          'fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-transparent',
+          scrolled ? 'bg-slate-950/80 backdrop-blur-md border-slate-800 py-4' : 'bg-transparent py-6'
+        )}
+      >
         <div className="container mx-auto px-6 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <a href="#" className="text-xl font-bold tracking-tighter text-white hover:text-blue-400 transition-colors">
@@ -77,53 +110,184 @@ export default function App() {
             </a>
             <LiveTicker />
           </div>
-          
+
           <div className="hidden md:flex items-center space-x-8">
-            {NAV_LINKS.map(link => (
+            {NAV_LINKS.map((link) => (
               <a key={link.label} href={link.href} className="text-sm font-medium hover:text-blue-400 transition-colors">
                 {link.label}
               </a>
             ))}
-            <a href={`${import.meta.env.BASE_URL}PeytonCampbellResume.pdf`} target="_blank" className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-full transition-all flex items-center gap-2">
+            <a
+              href={`${import.meta.env.BASE_URL}PeytonCampbellResume.pdf`}
+              target="_blank"
+              className="px-4 py-2 bg-gradient-to-r from-blue-600 to-amber-500 hover:brightness-110 text-white text-sm font-bold rounded-full transition-all flex items-center gap-2"
+            >
               <Download size={16} />
               Resume
             </a>
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden text-white p-2"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label={isMobileMenuOpen ? 'Close navigation' : 'Open navigation'}
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
       </nav>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 z-40 bg-slate-950 pt-24 px-6 md:hidden"
+          >
+            <div className="flex flex-col space-y-6 text-center">
+              {NAV_LINKS.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-xl font-bold text-slate-300 hover:text-white"
+                >
+                  {link.label}
+                </a>
+              ))}
+              <a
+                href={`${import.meta.env.BASE_URL}PeytonCampbellResume.pdf`}
+                target="_blank"
+                className="inline-flex justify-center items-center gap-2 px-6 py-3 bg-blue-600 text-white font-bold rounded-full mx-auto"
+              >
+                <Download size={18} /> Resume
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Hero Section */}
       <section className="min-h-screen flex items-center pt-20 relative overflow-hidden" id="about">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-500/20 via-slate-950/0 to-slate-950/0" />
-        
+
         <div className="container mx-auto px-6 relative z-10">
-          <motion.div 
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="max-w-4xl"
-          >
-            <motion.h1 variants={fadeInUp} className="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-6 leading-tight">
+          <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="max-w-4xl">
+            <motion.h1
+              variants={fadeInUp}
+              className="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-6 leading-tight"
+            >
               {HERO.headline}
             </motion.h1>
-            <motion.p variants={fadeInUp} className="text-xl text-slate-400 mb-8 max-w-2xl">
+            <motion.p variants={fadeInUp} className="text-xl text-slate-300 mb-8 max-w-2xl leading-relaxed">
               {HERO.subheadline}
             </motion.p>
-            
-            <motion.div variants={fadeInUp} className="flex items-center gap-4">
-              <a href="#projects" className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-all flex items-center gap-2">
-                View Work <ArrowRight size={18} />
+
+            <motion.div variants={fadeInUp} className="flex items-center gap-4 flex-wrap">
+              <a
+                href="#projects"
+                className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-all flex items-center gap-2 shadow-lg shadow-blue-600/20"
+              >
+                See Latest Work <ArrowRight size={18} />
+              </a>
+              <a
+                href={`${import.meta.env.BASE_URL}PeytonCampbellResume.pdf`}
+                className="px-8 py-3 border border-amber-400 text-amber-300 font-bold rounded-lg transition-all hover:bg-amber-400/10 flex items-center gap-2"
+              >
+                Download CV <Download size={18} />
               </a>
               <div className="flex gap-2">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="p-3 bg-slate-900 border border-slate-800 rounded-lg hover:border-blue-500/50 hover:text-blue-400 transition-all">
+                <a
+                  aria-label="GitHub profile"
+                  href="https://github.com/peytoncampbell"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 bg-slate-900 border border-slate-800 rounded-lg hover:border-blue-500/50 hover:text-blue-400 transition-all"
+                >
                   <Github size={20} />
                 </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="p-3 bg-slate-900 border border-slate-800 rounded-lg hover:border-blue-500/50 hover:text-blue-400 transition-all">
+                <a
+                  aria-label="LinkedIn profile"
+                  href="https://www.linkedin.com/in/peyton-campbell/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 bg-slate-900 border border-slate-800 rounded-lg hover:border-blue-500/50 hover:text-blue-400 transition-all"
+                >
                   <Linkedin size={20} />
                 </a>
               </div>
             </motion.div>
+
+            <motion.div variants={fadeInUp} className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {HERO.stats.map((stat, idx) => (
+                <div key={stat.label} className="glass rounded-xl p-4 flex items-center gap-3 border border-slate-800/80">
+                  <stat.icon className="text-amber-400" />
+                  <div>
+                    <p className="text-xs uppercase tracking-widest text-slate-500">Signal {idx + 1}</p>
+                    <p className="text-sm font-semibold text-white">{stat.label}</p>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Highlights Strip */}
+      <section className="py-8 bg-slate-950/60 border-y border-slate-900">
+        <div className="container mx-auto px-6">
+          <div className="grid gap-4 md:grid-cols-3">
+            {HIGHLIGHTS.map((item) => (
+              <div key={item.label} className="glass rounded-xl p-5 border border-slate-800/80 flex items-start gap-3">
+                <item.icon className="text-amber-400 mt-1" />
+                <div>
+                  <p className="text-sm font-semibold text-white">{item.label}</p>
+                  <p className="text-xs text-slate-400 mt-1">{item.detail}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Scouting Report (Radar Chart) */}
+      <section className="py-12 bg-slate-950/50 border-y border-slate-900">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row items-center gap-12 md:gap-24">
+            <div className="flex-1 text-center md:text-left">
+              <SectionHeading className="md:ml-0 ml-4">The Scouting Report</SectionHeading>
+              <p className="text-slate-400 text-lg mb-6 leading-relaxed">
+                Just like a pre-game analysis, here's a breakdown of my technical strengths. I balance{' '}
+                <span className="text-blue-400 font-bold">engineering precision</span> with
+                <span className="text-blue-400 font-bold"> leadership</span> and
+                <span className="text-blue-400 font-bold"> adaptability</span>.
+              </p>
+              <ul className="space-y-4 text-slate-300">
+                <li className="flex items-center gap-3">
+                  <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                  <strong>Frontend:</strong> React, Tailwind, Modern UI/UX
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                  <strong>Backend:</strong> .NET, Python, REST APIs
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                  <strong>Leadership:</strong> Agile Team Lead, Mentorship
+                </li>
+              </ul>
+            </div>
+
+            <div className="flex-1 flex justify-center">
+              <div className="relative">
+                <div className="absolute inset-0 bg-blue-500/10 blur-3xl rounded-full -z-10" />
+                <RadarChart data={SCOUTING_REPORT} size={window.innerWidth < 768 ? 320 : 400} />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -133,15 +297,15 @@ export default function App() {
           <div className="flex flex-col md:flex-row justify-between items-end mb-12">
             <SectionHeading className="mb-0">Projects I've Worked On</SectionHeading>
             <div className="flex gap-2 mt-6 md:mt-0 overflow-x-auto pb-2 md:pb-0">
-              {['All', 'Production', 'ML/AI', 'Tools'].map(filter => (
+              {['All', 'Production', 'ML/AI', 'Tools'].map((filter) => (
                 <button
                   key={filter}
                   onClick={() => setProjectFilter(filter)}
                   className={clsx(
-                    "px-4 py-2 text-sm font-medium rounded-full transition-all border whitespace-nowrap",
-                    projectFilter === filter 
-                      ? "bg-blue-600 border-blue-500 text-white" 
-                      : "bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700"
+                    'px-4 py-2 text-sm font-medium rounded-full transition-all border whitespace-nowrap',
+                    projectFilter === filter
+                      ? 'bg-amber-500 border-amber-400 text-slate-950 font-bold'
+                      : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
                   )}
                 >
                   {filter}
@@ -149,7 +313,7 @@ export default function App() {
               ))}
             </div>
           </div>
-          
+
           <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <AnimatePresence>
               {filteredProjects.map((project) => (
@@ -166,23 +330,54 @@ export default function App() {
                       <span className="text-xs font-bold text-blue-400 uppercase tracking-wider border border-blue-900/50 bg-blue-900/20 px-2 py-1 rounded">
                         {project.category}
                       </span>
-                      <ExternalLink size={18} className="text-slate-500 group-hover:text-white transition-colors" />
+                      {project.cta?.url && (
+                        <a
+                          href={project.cta.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`${project.title} link`}
+                        >
+                          <ExternalLink size={18} className="text-slate-500 group-hover:text-white transition-colors" />
+                        </a>
+                      )}
                     </div>
-                    
-                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">{project.title}</h3>
-                    <p className="text-slate-400 text-sm mb-6 flex-grow">
-                      {project.description}
-                    </p>
-                    
+
+                    <h3 className="text-xl font-bold text-white mb-1 group-hover:text-blue-400 transition-colors">
+                      {project.title}
+                    </h3>
+                    <p className="text-xs text-amber-300 font-semibold mb-2">{project.role}</p>
+                    <p className="text-slate-400 text-sm mb-4 flex-grow">{project.description}</p>
+
+                    {project.metrics && (
+                      <ul className="space-y-1 mb-4 text-sm text-slate-300">
+                        {project.metrics.map((metric: string, idx: number) => (
+                          <li key={idx} className="flex items-start gap-2">
+                            <span className="mt-1 w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0" />
+                            <span>{metric}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
                     <div className="mt-auto">
                       <div className="flex flex-wrap gap-2 mb-4">
-                        {project.tech.map(t => (
-                          <span key={t} className="text-xs text-slate-500 font-mono">#{t}</span>
+                        {project.tech.map((t) => (
+                          <span key={t} className="text-xs text-slate-500 font-mono">
+                            #{t}
+                          </span>
                         ))}
                       </div>
-                      <a href={project.link} className="inline-flex items-center text-sm font-bold text-white hover:text-blue-400 transition-colors">
-                        View Source <ChevronRight size={16} />
-                      </a>
+                      {project.cta?.url && (
+                        <a
+                          href={project.cta.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center text-sm font-bold px-4 py-2 rounded-full border border-amber-400 text-amber-200 hover:bg-amber-400/10 transition-colors"
+                          aria-label={`View ${project.title}`}
+                        >
+                          {project.cta.label} <ChevronRight size={16} className="ml-1" />
+                        </a>
+                      )}
                     </div>
                   </div>
                 </motion.div>
@@ -193,15 +388,15 @@ export default function App() {
       </section>
 
       {/* Experience Timeline */}
-      <section className="py-20 relative">
+      <section className="py-20 relative" id="experience">
         <div className="container mx-auto px-6">
           <SectionHeading>Experience</SectionHeading>
-          
+
           <div className="relative max-w-3xl mx-auto">
             <div className="absolute left-0 md:left-8 top-0 bottom-0 w-px bg-slate-800" />
-            
+
             {EXPERIENCE.map((exp, idx) => (
-              <motion.div 
+              <motion.div
                 key={idx}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -210,13 +405,15 @@ export default function App() {
                 className="relative pl-8 md:pl-24 pb-16 last:pb-0"
               >
                 <div className="absolute left-[-4px] md:left-[28px] top-2 w-2 h-2 bg-blue-500 rounded-full ring-4 ring-slate-950" />
-                
+
                 <div className="glass p-6 rounded-xl border border-slate-800 hover:border-slate-700 transition-colors">
                   <div className="flex flex-col md:flex-row md:items-center justify-between mb-2">
                     <h3 className="text-xl font-bold text-white">{exp.company}</h3>
                     <span className="text-sm font-mono text-blue-400">{exp.period}</span>
                   </div>
-                  <div className="text-slate-400 font-medium mb-4">{exp.title} • {exp.location}</div>
+                  <div className="text-slate-400 font-medium mb-4">
+                    {exp.title} - {exp.location}
+                  </div>
                   <ul className="space-y-2">
                     {exp.bullets.map((bullet, bIdx) => (
                       <li key={bIdx} className="flex items-start gap-2 text-slate-400 text-sm">
@@ -265,31 +462,31 @@ export default function App() {
               style={{ backgroundImage: `url(${athleteImages[athleteImageIndex]})` }}
             />
           </AnimatePresence>
-          
+
           {/* Dark Overlay */}
           <div className="absolute inset-0 bg-slate-950/70 group-hover:bg-slate-950/60 transition-colors z-10" />
-          
+
           <div className="relative z-20">
-            <h3 className="text-3xl font-black text-white mb-6 uppercase tracking-tighter">
-              The Athlete
-            </h3>
+            <h3 className="text-3xl font-black text-white mb-6 uppercase tracking-tighter">The Athlete</h3>
             <p className="text-lg text-slate-200 leading-relaxed max-w-md font-medium">
-              Varsity Basketball & Avid Golfer.
-              <br/><br/>
-              High-level competition instilled the value of consistency and resilience. I bring that same intensity and team-first mentality to every project I touch.
+              Varsity Basketball and avid golfer.
+              <br />
+              <br />
+              High-level competition instilled the value of consistency and resilience. I bring that same intensity and team-first
+              mentality to every project I touch.
             </p>
           </div>
         </div>
-        
+
         <div className="flex-1 bg-slate-950 p-12 md:p-20 flex flex-col justify-center relative overflow-hidden group">
           <div className="absolute inset-0 bg-slate-800/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-          <h3 className="text-3xl font-black text-white mb-6 uppercase tracking-tighter">
-            The Engineer
-          </h3>
+          <h3 className="text-3xl font-black text-white mb-6 uppercase tracking-tighter">The Engineer</h3>
           <p className="text-lg text-slate-300 leading-relaxed max-w-md">
-            AI Enthusiast & Analytics Nerd.
-            <br/><br/>
-            I am obsessed with structure and performance. Whether architecting a .NET solution or fine-tuning an ML model, I build systems that are robust, scalable, and maintainable.
+            AI enthusiast and analytics nerd.
+            <br />
+            <br />
+            I am obsessed with structure and performance. Whether architecting a .NET solution or fine-tuning an ML model, I build
+            systems that are robust, scalable, and maintainable.
           </p>
         </div>
       </section>
@@ -305,20 +502,73 @@ export default function App() {
           >
             <h2 className="text-4xl font-bold text-white mb-6">Let's talk game plan.</h2>
             <p className="text-slate-400 mb-10 text-lg">
-              I'm always looking to connect with other builders and athletes. Whether it's about code, basketball, or building something new, let's chat.
+              Based in London, ON (EST). I reply within 24 hours. Whether it is about code, basketball, or building something new,
+              let's chat.
             </p>
-            
-            <a href="mailto:campbellpeyton042@gmail.com" className="inline-flex items-center gap-3 px-8 py-4 bg-white text-slate-950 font-bold text-lg rounded-full hover:bg-blue-50 transition-colors">
-              <Mail className="text-blue-600" />
-              campbellpeyton042@gmail.com
-            </a>
+
+            <form onSubmit={handleContactSubmit} className="grid gap-4 text-left">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm text-slate-400 block mb-2">Name</label>
+                  <input
+                    name="name"
+                    value={contactForm.name}
+                    onChange={handleContactChange}
+                    className="w-full rounded-lg bg-slate-900 border border-slate-800 focus:border-blue-500 focus:outline-none px-3 py-2 text-white"
+                    placeholder="Your name"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm text-slate-400 block mb-2">Email</label>
+                  <input
+                    name="email"
+                    type="email"
+                    value={contactForm.email}
+                    onChange={handleContactChange}
+                    className="w-full rounded-lg bg-slate-900 border border-slate-800 focus:border-blue-500 focus:outline-none px-3 py-2 text-white"
+                    placeholder="you@example.com"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="text-sm text-slate-400 block mb-2">Message</label>
+                <textarea
+                  name="message"
+                  value={contactForm.message}
+                  onChange={handleContactChange}
+                  className="w-full rounded-lg bg-slate-900 border border-slate-800 focus:border-blue-500 focus:outline-none px-3 py-3 text-white h-28"
+                  placeholder="Tell me about your project or question."
+                />
+              </div>
+              {contactError && <p className="text-sm text-amber-300">{contactError}</p>}
+              {contactSuccess && <p className="text-sm text-green-400">Thanks! I'll reply within 24 hours.</p>}
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+                <button
+                  type="submit"
+                  className="inline-flex items-center gap-3 px-6 py-3 bg-white text-slate-950 font-bold text-base rounded-full hover:bg-blue-50 transition-colors"
+                >
+                  <Mail className="text-blue-600" />
+                  Send message
+                </button>
+                <a
+                  href="https://www.linkedin.com/in/peyton-campbell/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 px-6 py-3 border border-amber-400 text-amber-300 font-semibold rounded-full hover:bg-amber-400/10 transition-colors"
+                >
+                  <CalendarClock className="text-amber-300" />
+                  Book a chat
+                </a>
+              </div>
+            </form>
           </motion.div>
         </div>
       </section>
 
       {/* Footer */}
       <footer className="py-8 border-t border-slate-800 bg-slate-950 text-center text-slate-500 text-sm">
-        <p>Built with React, Tailwind & Caffeine by Peyton Campbell.</p>
+        <p>Built with React, Tailwind, and caffeine by Peyton Campbell.</p>
+        <p className="mt-1">© {new Date().getFullYear()} Peyton Campbell</p>
       </footer>
     </div>
   );
