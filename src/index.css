@@ -37,10 +37,11 @@
     @apply bg-slate-950 text-white antialiased;
     font-family: 'Space Grotesk', 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     background-image: 
-      radial-gradient(circle at 10% 20%, rgba(251, 146, 60, 0.08), transparent 25%),
-      radial-gradient(circle at 90% 0%, rgba(59, 130, 246, 0.12), transparent 30%),
-      linear-gradient(to bottom, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95)),
-      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233b82f6' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      radial-gradient(circle at 18% 20%, rgba(255, 107, 43, 0.14), transparent 32%),
+      radial-gradient(circle at 82% 8%, rgba(61, 214, 196, 0.14), transparent 30%),
+      radial-gradient(circle at 70% 75%, rgba(59, 130, 246, 0.18), transparent 32%),
+      linear-gradient(135deg, rgba(7, 11, 22, 0.98), rgba(3, 7, 15, 0.98)),
+      url("data:image/svg+xml,%3Csvg width='140' height='140' viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.04' stroke-width='1'%3E%3Cpath d='M0 0h140v140H0z'/%3E%3Cpath d='M70 0v140M0 70h140'/%3E%3C/g%3E%3C/svg%3E");
   }
 }
 
@@ -50,4 +51,11 @@
 
 .card-hover {
   @apply transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/10;
+}
+
+.pattern-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 120px 120px;
 }

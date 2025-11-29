@@ -56,6 +56,7 @@ export default function App() {
   const [contactSuccess, setContactSuccess] = useState(false);
 
   const athleteImages = [`${import.meta.env.BASE_URL}basketball.jpg`, `${import.meta.env.BASE_URL}golf.jpg`];
+  const portraitImage = `${import.meta.env.BASE_URL}portrait.jpg`;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -172,67 +173,89 @@ export default function App() {
 
       {/* Hero Section */}
       <section className="min-h-screen flex items-center pt-20 relative overflow-hidden" id="about">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-500/20 via-slate-950/0 to-slate-950/0" />
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute w-[520px] h-[520px] -left-24 top-10 rounded-full bg-gradient-to-br from-blue-600/25 via-transparent to-transparent blur-3xl" />
+          <div className="absolute w-[420px] h-[420px] right-0 -bottom-12 rounded-full bg-gradient-to-tr from-amber-500/25 via-transparent to-transparent blur-3xl" />
+          <div className="absolute inset-0 pattern-grid opacity-30" />
+        </div>
 
         <div className="container mx-auto px-6 relative z-10">
-          <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="max-w-4xl">
-            <motion.h1
-              variants={fadeInUp}
-              className="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-6 leading-tight"
-            >
-              {HERO.headline}
-            </motion.h1>
-            <motion.p variants={fadeInUp} className="text-xl text-slate-300 mb-8 max-w-2xl leading-relaxed">
-              {HERO.subheadline}
-            </motion.p>
+          <div className="grid gap-12 lg:grid-cols-[1.1fr,0.9fr] items-center">
+            <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="max-w-3xl">
+              <motion.h1
+                variants={fadeInUp}
+                className="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-6 leading-tight"
+              >
+                {HERO.headline}
+              </motion.h1>
+              <motion.p variants={fadeInUp} className="text-xl text-slate-300 mb-8 max-w-2xl leading-relaxed">
+                {HERO.subheadline}
+              </motion.p>
 
-            <motion.div variants={fadeInUp} className="flex items-center gap-4 flex-wrap">
-              <a
-                href="#projects"
-                className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-all flex items-center gap-2 shadow-lg shadow-blue-600/20"
-              >
-                See Latest Work <ArrowRight size={18} />
-              </a>
-              <a
-                href={`${import.meta.env.BASE_URL}PeytonCampbellResume.pdf`}
-                className="px-8 py-3 border border-amber-400 text-amber-300 font-bold rounded-lg transition-all hover:bg-amber-400/10 flex items-center gap-2"
-              >
-                Download CV <Download size={18} />
-              </a>
-              <div className="flex gap-2">
+              <motion.div variants={fadeInUp} className="flex items-center gap-4 flex-wrap">
                 <a
-                  aria-label="GitHub profile"
-                  href="https://github.com/peytoncampbell"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 bg-slate-900 border border-slate-800 rounded-lg hover:border-blue-500/50 hover:text-blue-400 transition-all"
+                  href="#projects"
+                  className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-all flex items-center gap-2 shadow-lg shadow-blue-600/20"
                 >
-                  <Github size={20} />
+                  See Latest Work <ArrowRight size={18} />
                 </a>
                 <a
-                  aria-label="LinkedIn profile"
-                  href="https://www.linkedin.com/in/peyton-campbell/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 bg-slate-900 border border-slate-800 rounded-lg hover:border-blue-500/50 hover:text-blue-400 transition-all"
+                  href={`${import.meta.env.BASE_URL}PeytonCampbellResume.pdf`}
+                  className="px-8 py-3 border border-amber-400 text-amber-300 font-bold rounded-lg transition-all hover:bg-amber-400/10 flex items-center gap-2"
                 >
-                  <Linkedin size={20} />
+                  Download CV <Download size={18} />
                 </a>
+                <div className="flex gap-2">
+                  <a
+                    aria-label="GitHub profile"
+                    href="https://github.com/peytoncampbell"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 bg-slate-900 border border-slate-800 rounded-lg hover:border-blue-500/50 hover:text-blue-400 transition-all"
+                  >
+                    <Github size={20} />
+                  </a>
+                  <a
+                    aria-label="LinkedIn profile"
+                    href="https://www.linkedin.com/in/peyton-campbell/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 bg-slate-900 border border-slate-800 rounded-lg hover:border-blue-500/50 hover:text-blue-400 transition-all"
+                  >
+                    <Linkedin size={20} />
+                  </a>
+                </div>
+              </motion.div>
+
+              <motion.div variants={fadeInUp} className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {HERO.stats.map((stat, idx) => (
+                  <div key={stat.label} className="glass rounded-xl p-4 flex items-center gap-3 border border-slate-800/80">
+                    <stat.icon className="text-amber-400" />
+                    <div>
+                      <p className="text-xs uppercase tracking-widest text-slate-500">Signal {idx + 1}</p>
+                      <p className="text-sm font-semibold text-white">{stat.label}</p>
+                    </div>
+                  </div>
+                ))}
+              </motion.div>
+            </motion.div>
+
+            <motion.div variants={fadeInUp} className="relative">
+              <div className="absolute -inset-6 rounded-[28px] bg-gradient-to-br from-blue-600/20 via-transparent to-amber-400/20 blur-3xl" />
+              <div className="relative aspect-[4/5] max-w-[420px] ml-auto overflow-hidden rounded-[28px] border border-slate-800/50 shadow-2xl shadow-blue-900/30 bg-slate-900/30">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-600/15 via-transparent to-amber-500/15 z-10 pointer-events-none mix-blend-overlay" />
+                <div className="absolute inset-0 bg-slate-950/25 z-10 pointer-events-none" />
+                <img
+                  src={portraitImage}
+                  alt="Peyton Campbell"
+                  className="w-full h-full object-cover object-center"
+                  style={{
+                    filter: 'brightness(0.85) contrast(1.1) saturate(1.15)',
+                  }}
+                />
               </div>
             </motion.div>
-
-            <motion.div variants={fadeInUp} className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {HERO.stats.map((stat, idx) => (
-                <div key={stat.label} className="glass rounded-xl p-4 flex items-center gap-3 border border-slate-800/80">
-                  <stat.icon className="text-amber-400" />
-                  <div>
-                    <p className="text-xs uppercase tracking-widest text-slate-500">Signal {idx + 1}</p>
-                    <p className="text-sm font-semibold text-white">{stat.label}</p>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
